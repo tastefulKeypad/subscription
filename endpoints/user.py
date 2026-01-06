@@ -107,7 +107,7 @@ def create_user(
             detail="Email already registered"
         )
 
-    # Hash password and store user's credentials to db
+    # Hash password and store users credentials to db
     new_user = models.User(**user.model_dump())
     new_user.password = password_hash.hash(new_user.password)
     db.add(new_user)
