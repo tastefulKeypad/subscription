@@ -1,1 +1,1 @@
-__all__ = ['user']
+__all__ = ['user', 'promo', 'product', 'transaction', 'token']
