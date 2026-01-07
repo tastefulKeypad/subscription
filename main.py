@@ -10,6 +10,7 @@ import endpoints
 from db.database import Base, engine
 import db.database as appdb
 from endpoints.user import router as user_router
+from endpoints.auth import router as token_router
 
 # Init JWT token data 
 SECRET_KEY = "CHANGE_ME"
@@ -23,6 +24,7 @@ Base.metadata.create_all(bind=engine)
 security = HTTPBasic()
 app = FastAPI()
 app.include_router(user_router)
+app.include_router(token_router)
 
 # Endpoints
 @app.get("/")
