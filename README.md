@@ -7,3 +7,5 @@ source ./bin/activate
 pip install -r requirements.txt
 fastapi run main.py
 ```
+# Архитектура приложения (WIP)
+![Архитектура приложения](https://github.com/tastefulKeypad/subscription/blob/main/app.drawio.svg)
