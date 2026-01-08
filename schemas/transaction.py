@@ -5,10 +5,11 @@ class TransactionBase(BaseModel):
     """Base schema with common transaction fields"""
     userId: int
     productId: int
+    promoName: str
     action: str
     dateTime: datetime
     status: str
-    moneyChange: int
+    bankChange: int
 
 class TransactionCreate(TransactionBase):
     """Schema for creating a new transaction"""

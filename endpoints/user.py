@@ -24,6 +24,9 @@ def create_user(
         user: schemas.user.UserCreate,
         db: Session = Depends(appdb.get_db)
 ):
+    """
+    Create a new user and add him to database
+    """
     # Check if email is already registered
     db_user = db.query(models.User).filter(
         models.User.email == user.email
@@ -43,25 +46,16 @@ def create_user(
     db.refresh(new_user)
     return new_user
 
-'''
-@router.get("/get_user/", response_model=schemas.user.UserResponse)
-def get_user(
-    id: int,
-    credentials: HTTPBasicCredentials = Depends(security),
-    db: Session = Depends(appdb.get_db)
-):
-    user = db.query(models.User).filter(models.User.id == id).first()
-    if user is None:
-        raise HTTPException(status_code=404, detail="User not found")
-    return user
-
-    '''
-
-@router.get("/get_users/", response_model=List[schemas.user.UserResponse])
+@router.get("/get_users", response_model=List[schemas.user.UserResponse])
 def get_users(
     token_user: Annotated[models.User, Depends(get_token_user)],
     db: Session = Depends(appdb.get_db)
 ):
+    """
+    Get list of all registered users 
+
+    Must be admin to use this endpoint
+    """
     if not token_user.isAdmin:
         raise HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
@@ -71,5 +65,21 @@ def get_users(
     return db.query(models.User).all()
 
 
+@router.get("/get_user", response_model=schemas.user.UserResponse)
+def get_user(
+    id: int,
+    token_user: Annotated[models.User, Depends(get_token_user)],
+    db: Session = Depends(appdb.get_db)
+):
+    """
+    Get user with specified id 
 
+    If authorized as normal user, return his own information
+    """
+    if not token_user.isAdmin:
+        return token_user
+    user = db.query(models.User).filter(models.User.id == id).first()
+    if user is None:
+        raise HTTPException(status_code=404, detail="User not found")
+    return user
 
