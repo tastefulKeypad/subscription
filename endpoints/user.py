@@ -21,8 +21,8 @@ router = APIRouter(prefix="/users", tags=["users"])
 # Endpoints
 @router.post("/create_user", response_model=schemas.user.UserResponse)
 def create_user(
-        user: schemas.user.UserCreate,
-        db: Session = Depends(appdb.get_db)
+    user: schemas.user.UserCreate,
+    db: Session = Depends(appdb.get_db)
 ):
     """
     Create a new user and add him to database
@@ -38,7 +38,7 @@ def create_user(
             detail="Email already registered"
         )
 
-    # Hash password and store users credentials to db
+    # Hash password and store user credentials to db
     new_user = models.User(**user.model_dump())
     new_user.password = password_hash.hash(new_user.password)
     db.add(new_user)
@@ -57,11 +57,7 @@ def get_users(
     Must be admin to use this endpoint
     """
     if not token_user.isAdmin:
-        raise HTTPException(
-        status_code=status.HTTP_401_UNAUTHORIZED,
-        detail="Must be admin to use this endpoint!",
-        headers={"WWW-Authenticate": "Bearer"},
-    )
+        raise_exception_admin()
     return db.query(models.User).all()
 
 

@@ -16,7 +16,16 @@ from securityConfig import SECRET_KEY, ALGORITHM, ACCESS_TOKEN_EXPIRE_MINUTES
 password_hash = PasswordHash.recommended()
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/token")
 
+# ================ Common HTTPExceptions ================
+def raise_exception_admin():
+    raise HTTPException(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        detail="Must be admin to use this endpoint",
+        headers={"WWW-Authenticate": "Bearer"}
+    )
 
+
+# ================ Common functions ================
 def verify_password(plain_password, hashed_password):
     return password_hash.verify(plain_password, hashed_password)
 
