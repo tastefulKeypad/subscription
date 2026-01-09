@@ -1,12 +1,12 @@
 from pydantic import BaseModel 
-from datetime import datetime
+from datetime import datetime, date
 
 class PromoBase(BaseModel):
     """Base schema with common promo fields"""
     name: str
     productId: int
     discount: int
-    expDate: datetime
+    expDate: date
 
 class PromoCreate(PromoBase):
     """Schema for creating a new promo"""
@@ -14,7 +14,6 @@ class PromoCreate(PromoBase):
 
 class PromoResponse(PromoBase):
     """Schema with promo response"""
-    id: int
     # Allow conversion from ORM objects
     class Config:
         from_attributes = True

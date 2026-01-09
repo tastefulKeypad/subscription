@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, Integer, String, DateTime, Boolean
+from sqlalchemy import Column, Integer, Integer, String, DateTime, Boolean, Date
 from .database import Base
 
 class User(Base):
@@ -20,7 +20,7 @@ class Promo(Base):
     name      = Column(String, primary_key=True, nullable=False)
     productId = Column(Integer, nullable=False)
     discount  = Column(Integer, nullable=False)
-    expDate   = Column(DateTime, nullable=False)
+    expDate   = Column(Date, nullable=False)
 
 class Transaction(Base):
     __tablename__ = "transactions"
