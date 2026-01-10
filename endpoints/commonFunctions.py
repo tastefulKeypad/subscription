@@ -24,6 +24,49 @@ def raise_exception_admin():
         headers={"WWW-Authenticate": "Bearer"}
     )
 
+def raise_exception_user():
+    raise HTTPException(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        detail="Must be a normal user to use this endpoint",
+        headers={"WWW-Authenticate": "Bearer"}
+    )
+
+def raise_exception_no_user():
+    raise HTTPException(
+        status_code=status.HTTP_400_BAD_REQUEST,
+        detail="User does not exist"
+    )
+
+def raise_exception_no_subscription():
+    raise HTTPException(
+        status_code=status.HTTP_400_BAD_REQUEST,
+        detail="Subscription does not exist"
+    )
+
+
+def raise_exception_no_product():
+    raise HTTPException(
+        status_code=status.HTTP_400_BAD_REQUEST,
+        detail="Product does not exist"
+    )
+
+def raise_exception_no_promo():
+    raise HTTPException(
+        status_code=status.HTTP_400_BAD_REQUEST,
+        detail="Promo does not exist"
+    )
+
+def raise_exception_timeout():
+    raise HTTPException(
+        status_code=status.HTTP_408_REQUEST_TIMEOUT,
+        detail="Connection timeout, please try again later"
+    )
+
+def raise_exception_insufficient_funds():
+    raise HTTPException(
+        status_code=status.HTTP_400_BAD_REQUEST,
+        detail="Unable to process payment: insufficient funds"
+    )
 
 # ================ Common functions ================
 def verify_password(plain_password, hashed_password):
@@ -43,7 +86,10 @@ def authenticate_user(
         return False
     return user
 
-def create_access_token(data: dict, expires_delta: timedelta | None = None):
+def create_access_token(
+    data: dict, 
+    expires_delta: timedelta | None = None
+):
     to_encode = data.copy()
     if expires_delta:
         expire = datetime.now(timezone.utc) + expires_delta

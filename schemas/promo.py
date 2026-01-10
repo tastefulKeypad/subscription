@@ -1,11 +1,11 @@
-from pydantic import BaseModel 
+from pydantic import BaseModel, PositiveInt, Field
 from datetime import datetime, date
 
 class PromoBase(BaseModel):
     """Base schema with common promo fields"""
     name: str
     productId: int
-    discount: int
+    discount: PositiveInt = Field(gt=0, lt=100)
     expDate: date
 
 class PromoCreate(PromoBase):

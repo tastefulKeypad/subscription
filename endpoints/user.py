@@ -74,8 +74,10 @@ def get_user(
     """
     if not token_user.isAdmin:
         return token_user
-    user = db.query(models.User).filter(models.User.id == id).first()
-    if user is None:
-        raise HTTPException(status_code=404, detail="User not found")
-    return user
+    db_user = db.query(models.User).filter(
+        models.User.id == id
+    ).first()
+    if not db_user:
+        raise_exception_no_user()
+    return db_user
 

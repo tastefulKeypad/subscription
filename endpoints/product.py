@@ -94,10 +94,7 @@ def update_product(
         models.Product.id == id
     ).first()
     if not db_target_product:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Product does not exist"
-        )
+        raise_exception_no_product()
 
     # Update product in db
     db_target_product.name = product.name

@@ -5,7 +5,7 @@ class TransactionBase(BaseModel):
     """Base schema with common transaction fields"""
     userId: int
     productId: int
-    promoName: str
+    promoName: str | None = None
     action: str
     dateTime: datetime
     status: str

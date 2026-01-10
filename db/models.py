@@ -27,15 +27,15 @@ class Transaction(Base):
     id          = Column(Integer, primary_key=True, index=True)
     userId      = Column(Integer, nullable=False)
     productId   = Column(Integer, nullable=False)
-    promoName   = Column(String, nullable=False)
+    promoName   = Column(String, nullable=True)
     action      = Column(String, nullable=False)
     dateTime    = Column(DateTime, nullable=False)
     status      = Column(String, nullable=False)
     bankChange  = Column(Integer, nullable=False)
 
-class Subs(Base):
-    __tablename__ = "subs"
-    id = Column(Integer, primary_key=True, index=True)
+class Sub(Base):
+    __tablename__ = "Subs"
+    id          = Column(Integer, primary_key=True, index=True)
     userId      = Column(Integer, nullable=False)
     productId   = Column(Integer, nullable=False)
     price       = Column(Integer, nullable=False)

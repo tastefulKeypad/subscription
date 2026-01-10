@@ -1,11 +1,11 @@
-from pydantic import BaseModel 
+from pydantic import BaseModel, PositiveInt
 from datetime import datetime
 
 class SubBase(BaseModel):
     """Base schema with common sub fields"""
     userId: int
     productId: int
-    price: int
+    price: PositiveInt
     status: str
     dateTime: datetime
 

@@ -52,10 +52,7 @@ def create_promo(
     ).first()
 
     if not db_product:
-         raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Product does not exist"
-        )
+        raise_exception_no_product()
 
     # Add new promo to db
     new_promo = models.Promo(**promo.model_dump())
@@ -98,10 +95,7 @@ def delete_promo(
     ).first()
 
     if not db_promo:
-         raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Promo not found"
-        )
+        raise_exception_no_promo()
     
     # Delete promo from db
     db.delete(db_promo)

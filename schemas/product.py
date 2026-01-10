@@ -1,9 +1,9 @@
-from pydantic import BaseModel 
+from pydantic import BaseModel, PositiveInt
 
 class ProductBase(BaseModel):
     """Base schema with common product fields"""
     name: str
-    price: int
+    price: PositiveInt
 
 class ProductCreate(ProductBase):
     """Schema for creating a new product"""
