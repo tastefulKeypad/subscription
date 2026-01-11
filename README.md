@@ -25,3 +25,15 @@ source ./bin/activate
 pip install -r requirements.txt
 fastapi run main.py
 ```
+
+Чтобы инициализировать бд пользователями и продуктами используйте endpoint 'populate_db' в default, после чего можно будет авторизироваться как администратор:
+
+email: admin@example.com
+
+pass:  admin 
+
+Или как обычный пользователь:
+
+email: user1@example.com 
+
+pass:  user
