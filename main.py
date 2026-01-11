@@ -18,6 +18,7 @@ import endpoints
 from db.database import Base, engine, SessionLocal
 import db.database as appdb
 import db.models as models
+import sending_messages.emailSend as emailService
 import schemas.user, schemas.transaction, schemas.sub
 from endpoints import fakePayment
 from endpoints.user import router as user_router
@@ -69,10 +70,19 @@ async def process_pending_transactions():
                 status = "Success",
             )
             
+            db_user = db.query(models.User).filter(
+                models.User.id == transaction.hiddenUserId
+            ).first()
+            db_product = db.query(models.Product).filter(
+                models.Product.id == transaction.productId
+            ).first()
+
             if transaction.action == "Refund request":
-                transaction.toRefund = payment_service_response.bankChange
+                new_transaction.toRefund = payment_service_response.bankChange
+                emailService.successfull_refund(db_user.email, db_product.name, transaction.toRefund)
             else:
-                transaction.bankChange = payment_service_response.bankChange
+                new_transaction.bankChange = payment_service_response.bankChange
+                emailService.payment_subscription(db_user.email, db_product.name, transaction.bankChange)
 
             db.delete(transaction)
             db.add(new_transaction)

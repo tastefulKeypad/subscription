@@ -9,7 +9,8 @@ from sqlalchemy.orm import Session
 from pwdlib import PasswordHash
 
 # Imports from local files
-from . import fakePayment
+from endpoints import fakePayment
+import sending_messages.emailSend as emailService
 import db.database as appdb
 import db.models as models
 import schemas.user, schemas.token, schemas.product, schemas.promo, schemas.sub, schemas.transaction
@@ -101,6 +102,7 @@ def subscribe_to_product(
         status = "Active",
         dateTime = dateTimeNow + timedelta(days=30)
     )
+    emailService.new_subscription(token_user.email, db_product.name, price_final)
 
     db.add(new_sub)
     db.commit()

@@ -34,7 +34,7 @@ class Transaction(Base):
     status       = Column(String, nullable=False)
     toRefund     = Column(Integer, nullable=True)
     triedRefund  = Column(Boolean, nullable=True)
-    bankChange   = Column(Integer, nullable=False)
+    bankChange   = Column(Integer, nullable=True)
 
 class Sub(Base):
     __tablename__ = "Subs"

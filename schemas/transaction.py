@@ -12,7 +12,7 @@ class TransactionBase(BaseModel):
     status: str
     toRefund: int | None = None
     triedRefund: bool | None = None
-    bankChange: int
+    bankChange: int | None = None
 
 class TransactionCreate(TransactionBase):
     """Schema for creating a new transaction"""
