@@ -74,6 +74,12 @@ def raise_exception_insufficient_funds():
         detail="Unable to process payment: insufficient funds"
     )
 
+def raise_exception_transaction_not_refundable():
+    raise HTTPException(
+        status_code=status.HTTP_400_BAD_REQUEST,
+        detail="Specified transaction is not eligible for a refund"
+    )
+
 # ================ Common functions ================
 def verify_password(plain_password, hashed_password):
     return password_hash.verify(plain_password, hashed_password)

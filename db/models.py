@@ -31,6 +31,8 @@ class Transaction(Base):
     action      = Column(String, nullable=False)
     dateTime    = Column(DateTime, nullable=False)
     status      = Column(String, nullable=False)
+    toRefund    = Column(Integer, nullable=True)
+    triedRefund = Column(Boolean, nullable=True)
     bankChange  = Column(Integer, nullable=False)
 
 class Sub(Base):

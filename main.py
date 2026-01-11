@@ -15,6 +15,7 @@ from endpoints.product import router as product_router
 from endpoints.promo import router as promo_router
 from endpoints.sub import router as sub_router
 from endpoints.transaction import router as transaction_router
+from endpoints.refund import router as refund_router
 
 # Init JWT token data 
 SECRET_KEY = "CHANGE_ME"
@@ -33,6 +34,7 @@ app.include_router(product_router)
 app.include_router(promo_router)
 app.include_router(sub_router)
 app.include_router(transaction_router)
+app.include_router(refund_router)
 
 # Endpoints
 @app.get("/")

@@ -9,6 +9,8 @@ class TransactionBase(BaseModel):
     action: str
     dateTime: datetime
     status: str
+    toRefund: int | None = None
+    triedRefund: bool | None = None
     bankChange: int
 
 class TransactionCreate(TransactionBase):
