@@ -20,7 +20,7 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/token")
 router = APIRouter(prefix="/transactions", tags=["transactions"])
 
 # Endpoints
-@router.post("/get_transaction_history", response_model=List[schemas.transaction.TransactionResponse])
+@router.get("/get_transaction_history", response_model=List[schemas.transaction.TransactionResponse])
 def get_transaction_history(
     token_user: Annotated[models.User, Depends(get_token_user)],
     userId: int,
@@ -29,9 +29,9 @@ def get_transaction_history(
     """
     Get transaction history of specified user
 
-    If normal user, return own transaction history
+    If authorized as normal user, return own transaction history
     """
-    # Check if user is a normal user
+    # If user is a normal user, return his own transaction history
     if not token_user.isAdmin:
         return db.query(models.Transaction).filter(models.Transaction.userId == token_user.id).all()
 
@@ -43,3 +43,42 @@ def get_transaction_history(
         raise_exception_no_user()
 
     return db.query(models.Transaction).filter(models.Transaction.userId == userId).all()
+
+@router.get("/get_transactions_eligible_for_refund", response_model=List[schemas.transaction.TransactionResponse])
+def get_transactions_eligible_for_refund(
+    token_user: Annotated[models.User, Depends(get_token_user)],
+    userId: int,
+    db: Session = Depends(appdb.get_db)
+):
+    """
+    Get transactions eligible for refund of specified user
+
+    Transaction is considered to be eligible for refund only if payment was successful
+    AND it was made in the past 7 days
+
+    If authorized as normal user, return own transactions eligible for refund
+    """
+    date_cutoff = datetime.now(timezone.utc) - timedelta(days=7)
+
+    # If user is a normal user, return his own transactions eligible for refund
+    if not token_user.isAdmin:
+        return db.query(models.Transaction).filter(
+            models.Transaction.userId     == token_user.id,
+            models.Transaction.status     == "Success",
+            models.Transaction.dateTime   >= date_cutoff,
+            models.Transaction.bankChange > 0
+        ).all()
+
+    # Check if specified user exists
+    db_user = db.query(models.User).filter(
+        models.User.id == userId
+    ).first()
+    if not db_user:
+        raise_exception_no_user()
+
+    return db.query(models.Transaction).filter(
+        models.Transaction.userId     == userId,
+        models.Transaction.status     == "Success",
+        models.Transaction.dateTime   >= date_cutoff,
+        models.Transaction.bankChange > 0
+    ).all()
