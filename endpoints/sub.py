@@ -7,6 +7,8 @@ from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from sqlalchemy import update
 from sqlalchemy.orm import Session
 from pwdlib import PasswordHash
+import random
+import time
 
 # Imports from local files
 import db.database as appdb
@@ -31,9 +33,18 @@ class FakePayment():
 # Insufficient funds - недостаточно средств
 # Timeout - превышено время ожидания
 def fake_payment_method(
-    price: int
+    price: float
 ) -> FakePayment:
-    return FakePayment(bankChange = price, status = "Success")
+    # Имитация сетевой задержки (реалистичное поведение)
+    time.sleep(0.1)
+
+    # Вероятности ошибок
+    if random.random() < 0.05:  # 5% — таймаут (недоступность)
+        return FakePayment(bankChange=0.0, status="Timeout")
+    elif random.random() < 0.15:  # 15% — недостаток средств
+        return FakePayment(bankChange=0.0, status="Insufficient funds")
+    else:
+        return FakePayment(bankChange=price, status="Success")
 
 
 # Endpoints
