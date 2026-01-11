@@ -4,6 +4,7 @@ from datetime import datetime
 class TransactionBase(BaseModel):
     """Base schema with common transaction fields"""
     userId: int
+    hiddenUserId: int | None = None
     productId: int
     promoName: str | None = None
     action: str

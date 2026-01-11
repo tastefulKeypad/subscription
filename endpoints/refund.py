@@ -149,10 +149,18 @@ def control_refund(
         )
         db.add(new_transaction)
     else:
-        # 
-        # ADD SCHEDULED TASKS LOGIC HERE!!!!!
-        #
-        pass
+        new_transaction = models.Transaction(
+            userId = 0,
+            hiddenUserId = db_transaction.userId,
+            productId = db_transaction.productId,
+            promoName = db_transaction.promoName,
+            action = "Refund request",
+            dateTime = datetime.now(timezone.utc),
+            status = "Awaiting scheduled task",
+            toRefund = db_transaction.toRefund,
+            bankChange = 0
+        )
+        db.add(new_transaction)
     
     db.commit()
     return {"message": "Successfully dealt with specified refund request"}

@@ -7,10 +7,9 @@ from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from sqlalchemy import update
 from sqlalchemy.orm import Session
 from pwdlib import PasswordHash
-import random
-import time
 
 # Imports from local files
+from . import fakePayment
 import db.database as appdb
 import db.models as models
 import schemas.user, schemas.token, schemas.product, schemas.promo, schemas.sub, schemas.transaction
@@ -20,32 +19,6 @@ from securityConfig import SECRET_KEY, ALGORITHM, ACCESS_TOKEN_EXPIRE_MINUTES
 password_hash = PasswordHash.recommended()
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/token")
 router = APIRouter(prefix="/subs", tags=["subs"])
-
-######## EXAMPLE OF A FAKE PAYMENT SERVICE ############
-# По хорошему нас интересует только то, прошла ли оплата оплата или нет, а также изменение счета пользователя
-class FakePayment():
-    def __init__(self, bankChange: int, status: str):
-        self.bankChange = bankChange
-        self.status = status
-
-# Здесь можно ограничиться статусами:
-# Success - успешная оплата
-# Insufficient funds - недостаточно средств
-# Timeout - превышено время ожидания
-def fake_payment_method(
-    price: float
-) -> FakePayment:
-    # Имитация сетевой задержки (реалистичное поведение)
-    time.sleep(0.1)
-
-    # Вероятности ошибок
-    if random.random() < 0.05:  # 5% — таймаут (недоступность)
-        return FakePayment(bankChange=0.0, status="Timeout")
-    elif random.random() < 0.15:  # 15% — недостаток средств
-        return FakePayment(bankChange=0.0, status="Insufficient funds")
-    else:
-        return FakePayment(bankChange=price, status="Success")
-
 
 # Endpoints
 @router.post("/subscribe_to_product", response_model=schemas.sub.SubResponse)
@@ -98,7 +71,7 @@ def subscribe_to_product(
     if promo_name:
         price_final *= 1-db_promo.discount/100
 
-    payment_service_response = fake_payment_method(price_final)
+    payment_service_response = fakePayment.fake_payment_method(price_final)
 
     # Add transaction to db and handle payment service errors
     dateTimeNow = datetime.now(timezone.utc)

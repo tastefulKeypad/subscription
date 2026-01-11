@@ -36,11 +36,11 @@ def get_transaction_history(
     if not token_user.isAdmin:
         return db.query(models.Transaction).filter(models.Transaction.userId == token_user.id).all()
 
-    # Check if specified user exists
+    # Check if specified user exists and it's not system user with id == 0
     db_user = db.query(models.User).filter(
         models.User.id == userId
     ).first()
-    if not db_user:
+    if not db_user and userId != 0:
         raise_exception_no_user()
 
     return db.query(models.Transaction).filter(models.Transaction.userId == userId).all()

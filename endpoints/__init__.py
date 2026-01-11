@@ -1,1 +1,1 @@
-__all__ = ['user', 'commonFunctions', 'auth', 'product', 'promo', 'sub', 'transaction', 'refund']
+__all__ = ['user', 'commonFunctions', 'auth', 'product', 'promo', 'sub', 'transaction', 'refund', 'fakePayment']

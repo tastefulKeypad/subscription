@@ -36,6 +36,7 @@ PyYAML==6.0.3
 rich==14.2.0
 rich-toolkit==0.17.1
 rignore==0.7.6
+schedule==1.2.2
 sentry-sdk==2.48.0
 shellingham==1.5.4
 SQLAlchemy==2.0.45

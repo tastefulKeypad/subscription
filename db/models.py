@@ -24,16 +24,17 @@ class Promo(Base):
 
 class Transaction(Base):
     __tablename__ = "transactions"
-    id          = Column(Integer, primary_key=True, index=True)
-    userId      = Column(Integer, nullable=False)
-    productId   = Column(Integer, nullable=False)
-    promoName   = Column(String, nullable=True)
-    action      = Column(String, nullable=False)
-    dateTime    = Column(DateTime, nullable=False)
-    status      = Column(String, nullable=False)
-    toRefund    = Column(Integer, nullable=True)
-    triedRefund = Column(Boolean, nullable=True)
-    bankChange  = Column(Integer, nullable=False)
+    id           = Column(Integer, primary_key=True, index=True)
+    userId       = Column(Integer, nullable=False)
+    hiddenUserId = Column(Integer, nullable=True)
+    productId    = Column(Integer, nullable=False)
+    promoName    = Column(String, nullable=True)
+    action       = Column(String, nullable=False)
+    dateTime     = Column(DateTime, nullable=False)
+    status       = Column(String, nullable=False)
+    toRefund     = Column(Integer, nullable=True)
+    triedRefund  = Column(Boolean, nullable=True)
+    bankChange   = Column(Integer, nullable=False)
 
 class Sub(Base):
     __tablename__ = "Subs"
