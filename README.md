@@ -13,9 +13,6 @@ subscription
 - [x] Просмотр истории транзакций
 - [x] Система уведомлений пользователей по почте
 
-# Архитектура приложения (WIP)
-![Архитектура приложения](https://github.com/tastefulKeypad/subscription/blob/main/app_architecture.svg)
-
 # Порядок установки под Linux
 ```
 git clone https://github.com/tastefulKeypad/subscription.git
